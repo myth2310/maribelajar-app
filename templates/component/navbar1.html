@@ -1,0 +1,33 @@
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="padding-left: 4%; padding-right: 4%;">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="{{url_for('home')}}" ><span style="font-weight: bold; color: #2f3966!important;text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;">Mari</span><span style="font-weight: bold; color: #f08519!important;text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;">Belajar</span></a>
+    </div>
+    <ul class="nav navbar-nav navbar-left navbar-top-links">
+        <li><a href="{{url_for('home')}}">Home</a></li>
+        {% if level == "Siswa" %}
+        <li><a href="{{url_for('jadwalPelajaran')}}">Jadwal</a></li>
+        {% else %}
+        {% endif %}   
+        {% if level == "Guru" %}
+            <li><a href="{{url_for('listUjian')}}">Ujian</a></li>
+            <li><a href="{{ url_for('addMateri') }}">Materi</a></li>
+        {% else %}
+        {% endif %}   
+    </ul>
+    <ul class="nav navbar-right navbar-top-links">
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="fa fa-user fa-fw"></i> {{ username }}<b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li>
+                    <a href="{{url_for('profil')}}"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="{{url_for('logout')}}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>

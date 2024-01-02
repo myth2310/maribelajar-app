@@ -1,0 +1,30 @@
+{% extends 'component/base1.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <i class="fa-solid fa-calendar-days"></i>&nbsp; Jadwal Pelajaran
+            </div>
+            <div class="panel-body">
+                <div class="col-md">
+                    <ul class="list-group">
+                        {% if jadwal %}
+                        {% for jadwal_item in jadwal %}
+                            <a href="/{{ jadwal_item.id_mapel }}/{{ jadwal_item.pelajaran_slug }}" class="list-group-item d-flex justify-content-between align-items-center">{{ jadwal_item.pelajaran }}<span class="badge badge-success badge-pill">{{ jadwal_item.day }}</span></a>
+                        {% endfor %}
+                        {% else %}
+                            <p>Tidak ada jadwal.</p>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

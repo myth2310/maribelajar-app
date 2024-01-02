@@ -1,0 +1,62 @@
+{% extends 'component/base1.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+     <div class="row">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4>QUIS | {{row.pelajaran}}</h5>
+            </div>
+            <div class="panel-body">
+                <form action="/submit-quiz/{{kategori_id}}" method="post">
+                <div class="scrollable-div">
+                {% for soal in soal %}
+                <div class="container mt-5" style="font-size: 18px;">
+                    <p>{{soal.pertanyaan|safe}}</p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="question_{{ soal.soal_id }}" id="jawabanA" value="A">
+                        <label class="form-check-label" for="jawabanA">
+                            A. {{soal.jawaban_a}}
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="question_{{ soal.soal_id }}" id="jawabanB" value="B">
+                        <label class="form-check-label" for="jawabanB">
+                            B. {{soal.jawaban_b}}
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="question_{{ soal.soal_id }}" id="jawabanC" value="C">
+                        <label class="form-check-label" for="jawabanC">
+                            C. {{soal.jawaban_c}}
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="question_{{ soal.soal_id }}" id="jawabanD" value="D">
+                        <label class="form-check-label" for="jawabanD">
+                            D. {{soal.jawaban_d}}
+                        </label>
+                    </div>
+                </div>
+                {% endfor %}
+                </div>
+                <button type="submit" class="btn-lg btn-success">Selesai</button>
+                </form>          
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<style>
+    .scrollable-div {
+        height: 400px;     
+        overflow-y: auto;
+        overflow-x: hidden;
+        border: 1px;
+    }
+</style>
+
+{% endblock %}

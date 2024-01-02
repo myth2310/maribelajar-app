@@ -1,0 +1,83 @@
+{% extends 'component/base.html' %}
+
+{% block content %}
+
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-12 d-flex no-block align-items-center">
+            <h4 class="page-title">Dashboard</h4>
+            <div class="ms-auto text-end">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Registrasi User</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <img id="video" src="{{ url_for('video') }}" alt="Video Feed" width="100%">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <form action="/capture" class="form-horizontal" method="POST">
+                    <div class="card-body">
+                        <h4 class="card-title">Daftar Akun</h4>  
+                        <div class="form-group">
+                            <label for="hue-demo">ID Input</label>
+                            <input type="text" name="id_users" class="form-control demo" data-control="hue" value="{{ next_id }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="hue-demo">Nama Lengkap</label>
+                            <input type="text" id="nama" name="nama" class="form-control demo" data-control="hue"
+                               placeholder="Nama Lengkap" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="hue-demo">Status</label>
+                            <select name="status" class="select2 form-select shadow-none" style="width: 100%; height:36px;" required>
+                                <option selected disabled value="">Choose...</option>
+                                <option value="Aktif" >Aktif</option>
+                                <option value="Tidak Aktif" >Tidak Aktif</option>                 
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="hue-demo">Level</label>
+                            <input type="text" id="nama" name="level" class="form-control demo" data-control="hue"
+                               value="Siswa" readonly>
+                        </div>
+                        
+                        <div id="kelas-form">
+                            <label for="kelas">Kelas</label>
+                            <select id="kelas" name="id_kelas" class="select2 form-select shadow-none" style="width: 100%; height:36px;" required>
+                                <option selected disabled value="">Choose...</option>
+                                {% for kelas in kelas %}
+                                <option value="{{kelas.id_kelas}}" >{{kelas.kelas}}</option> 
+                                {% endfor %}                      
+                            </select>
+                        </div>                     
+                    </div>
+                    <div class="border-top">
+                        <div class="card-body">
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+{% endblock %}

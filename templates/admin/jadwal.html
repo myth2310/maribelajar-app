@@ -1,0 +1,193 @@
+{% extends 'component/base.html' %}
+
+{% block content %}
+
+{% include 'component/sweetalert.html'%}
+
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-12 d-flex no-block align-items-center">
+            <h4 class="page-title">Jadwal</h4>
+            <div class="ms-auto text-end">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Jadwal</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal"
+                data-bs-target="#JadwalModal">Tambah Jadwal</button>
+            <div class="table-responsive">
+                <table id="zero_config" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Hari</th>
+                            <th>Kelas</th>
+                            <th>Mapel</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in data %}
+                        <tr>
+                            <td>{{data.day}}</td>
+                            <td>{{data.nama_kelas}}</td>
+                            <td>{{data.nama_mapel}}</td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#EditJadwalModal{{data.id_jadwal}}"><i
+                                        class="fa-solid fa-pen-to-square"></i></button>
+                                <button type="button" class="btn btn-danger btn-sm delete" data-id="{{data.id_jadwal}}"><i class="fa-solid fa-trash"
+                                        style="color: #f7f7f7;"></i></button>
+                            </td>
+                        </tr>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="EditJadwalModal{{data.id_jadwal}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Jadwal</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="/edit-jadwal/{{data.id_jadwal}}" method="post">
+                                            <div class="form-group">
+                                                <label for="hue-demo">Mata Pelajaran</label>
+                                                <select name="day" id="hari" class="select2 form-select shadow-none"
+                                                    style="width: 100%; height:36px;">
+                                                    <option value="{{data.day}}">{{data.day}}</option>
+                                                    <option value="Senin">Senin</option>
+                                                    <option value="Selasa">Selasa</option>
+                                                    <option value="Rabu">Rabu</option>
+                                                    <option value="Kamis">Kamis</option>
+                                                    <option value="Jumat">Jumat</option>
+
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="hue-demo">Pelajaran</label>
+                                                <select name="id_mapel" class="select2 form-select shadow-none"
+                                                    style="width: 100%; height:36px;">
+                                                    <option value="{{data.id_mapel}}">{{data.nama_mapel}}
+                                                    {% for pelajaran in pelajaran %}
+                                                    <option value="{{pelajaran.id_mapel}}">{{pelajaran.pelajaran}}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="hue-demo">Kelas</label>
+                                                <select name="id_kelas" class="select2 form-select shadow-none"
+                                                    style="width: 100%; height:36px;">
+                                                    <option value="{{data.id_kelas}}">{{data.nama_kelas}}</option>
+                                                    {% for kelas in kelas %}
+                                                    <option value="{{kelas.id_kelas}}">{{kelas.kelas}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Edit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="JadwalModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Jadwal</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/insert-jadwal" method="post">
+                    <div class="form-group">
+                        <label for="hue-demo">Mata Pelajaran</label>
+                        <select name="day" id="hari" class="select2 form-select shadow-none"
+                            style="width: 100%; height:36px;" required>
+                            <option selected disabled value="">Choose...</option>
+                            <option value="Senin">Senin</option>
+                            <option value="Selasa">Selasa</option>
+                            <option value="Rabu">Rabu</option>
+                            <option value="Kamis">Kamis</option>
+                            <option value="Jumat">Jumat</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="hue-demo">Pelajaran</label>
+                        <select name="id_mapel" class="select2 form-select shadow-none"
+                            style="width: 100%; height:36px;" required>
+                            <option selected disabled value="">Choose...</option>
+                            {% for pelajaran in pelajaran %}
+                            <option value="{{pelajaran.id_mapel}}">{{pelajaran.pelajaran}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="hue-demo">Kelas</label>
+                        <select name="id_kelas" class="select2 form-select shadow-none"
+                            style="width: 100%; height:36px;" required>
+                            <option selected disabled value="">Choose...</option>
+                            {% for kelas in kelas %}
+                            <option value="{{kelas.id_kelas}}">{{kelas.kelas}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('.delete').click(function () {
+        var dataid = $(this).attr('data-id');
+        swal({
+            title: "Apa kamu yakin ?"
+            , text: "Kamu akan hapus jadwal ini "
+            , icon: "warning"
+            , buttons: true
+            , dangerMode: true
+            ,
+        })
+            .then((willUpprove) => {
+                if (willUpprove) {
+                    window.location = "/hapus-jadwal/" + dataid
+                    swal("Data berhasil dihapus", {
+                        icon: "success"
+                        ,
+                    });
+                } else {
+                    swal("Data batal dihapus");
+                }
+            });
+    });
+
+</script>
+
+{% endblock %}

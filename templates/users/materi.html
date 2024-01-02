@@ -1,0 +1,139 @@
+{% extends 'component/base1.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <aside class="col-md-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                </div>
+                <div class="panel-body">
+                    <div class="hero-widget well well-sm" style="background-color: white; border: none white">
+                        <div class="icon">
+                            {% if row.image is none or row.image == 'NULL' %}
+                            <img src="https://th.bing.com/th/id/OIP.ZT-Tw8tYy38htqch69vsGQAAAA?pid=ImgDet&rs=1" alt="Profil"
+                                width="40%" style="border-radius: 100%;">
+                            {% else %}
+                            <img src="{{ url_for('static', filename='Profil/' + row.image) }}" alt="Profil" width="40%"
+                                style="border-radius: 100%; width: auto; height: 100px;">
+                            {% endif %}
+                        </div>
+                        <div class="text">
+                            <label class="text-muted">{{row.level}}</label>
+                            <div class="clock">
+                                <div id="time"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <a href=" {{url_for('home')}}" class="btn btn-warning btn-lg btn-block">Kembali</a>
+                </div>
+            </div>
+        </aside>
+        <main class="col-md-8">
+            <!-- HEADER PAGE -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row" style="padding-left: 4%;">
+                        <div class="col-xs p-2">
+                            <div class="huge">{{row.pelajaran}}</div>
+                            <div><i class="fa-solid fa-user"></i>&nbsp; {{row.nama}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                </div>
+            </div>
+
+            <!-- CONTENT MATERI -->
+            <div class="scrollable-div">
+                {% for ujian in ujian %}
+                <div class="panel panel-red">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs">
+                                <span class="pull-left" style="padding-left: 2%;">{{ujian.kategori}} {{loop.index}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="/ujian/{{ujian.kategori_id}}">
+                        <div class="panel-footer">
+                            <span class="pull-left">{{ujian.nama_kategori}}</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+                {% if activities %}
+                {% for activities in activities%}
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs">
+                                <span class="pull-left" style="padding-left: 2%;">Materi Pertemuan {{loop.index}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% if activities.file is none or activities.file == 'NULL' %}
+                    <a href="{{activities.link}}">
+                        <div class="panel-footer">
+                            <span class="pull-left">{{activities.materi}}</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                    {% else %}
+                    <a href="/{{activities.materi_slug}}/{{activities.id_aktifitas}}">
+                        <div class="panel-footer">
+                            <span class="pull-left">{{activities.materi}}</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                {% else %}
+                <p>Belum ada data materi yang diinputkan.</p>
+                {% endif %}
+            </div>
+        </main>
+    </div>
+</div>
+
+
+<style>
+    .scrollable-div {
+        height: 400px;
+        overflow: auto;
+        border: 1px ; 
+    }
+
+    .clock {
+        text-align: center;
+        font-size: 30px;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+
+    #time {
+        color: #333;
+    }
+</style>
+<script>
+    function updateTime() {
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+        const timeString = `${hours}:${minutes}:${seconds}`;
+        document.getElementById('time').textContent = timeString;
+    }
+
+    setInterval(updateTime, 1000);
+</script>
+
+{% endblock %}

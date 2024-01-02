@@ -1,0 +1,184 @@
+{% extends 'component/base.html' %}
+
+{% block content %}
+
+{% include 'component/sweetalert.html'%}
+
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-12 d-flex no-block align-items-center">
+            <h4 class="page-title">Akademik</h4>
+            <div class="ms-auto text-end">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Akademik</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal"
+                data-bs-target="#AkademikModal">Tambah Akademik</button>
+            <div class="table-responsive">
+                <table id="zero_config" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Tahun Akademik</th>
+                            <th>Semester</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for akademik in akademik %}
+                        <tr>
+                            <td>{{akademik.tahun_akademik}}</td>
+                            <td>{{akademik.semester}}</td>
+                            <td>
+                                {% if akademik.status == 1 %}
+                                <span class="badge bg-success">Aktif</span>
+                                {% else %}
+                                <span class="badge bg-danger">Tidak Aktif</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#EditAkademikModal{{akademik.id_akademik}}"><i
+                                        class="fa-solid fa-pen-to-square"></i></button>
+                                <button type="button" class="btn btn-danger btn-sm delete"
+                                    data-id="{{akademik.id_akademik}}" data-nama="{{akademik.akademik}}"><i
+                                        class="fa-solid fa-trash" style="color: #f7f7f7;"></i></button>
+                            </td>
+                        </tr>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="EditAkademikModal{{akademik.id_akademik}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Akademik</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="/edit-akademik/{{akademik.id_akademik}}" method="post">
+                                            <div class="form-group">
+                                                <label>Tahun Akademik</label>
+                                                <input type="text" name="tahun_akademik" class="form-control"
+                                                   value="{{akademik.tahun_akademik}}" maxlength="9">
+                                                <small>Contoh : 2022/2023</small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="hue-demo">Semester</label>
+                                                <select name="semester" class="select2 form-select shadow-none"
+                                                    style="width: 100%; height:36px;">
+                                                    <option value="{{akademik.semester}}">{{akademik.semester}}</option>
+                                                    <option value="Ganjil">Ganjil</option>
+                                                    <option value="Genap">Genap</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="hue-demo">Status</label>
+                                                <select name="status" class="select2 form-select shadow-none"
+                                                    style="width: 100%; height:36px;">
+                                                    {% if akademik.status == 1 %}
+                                                    <option value="{{akademik.status}}">Aktif</option>
+                                                    {% else %}
+                                                    <option value="{{akademik.status}}">Tidak Aktif</option>
+                                                    {% endif %}
+                                                    <option value="1">Aktif</option>
+                                                    <option value="0">Tidak Aktif</option>
+                                                </select>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Edit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="AkademikModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Akademik</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/insert-akademik" method="post">
+                    <div class="form-group">
+                        <label>Tahun Akademik</label>
+                        <input type="text" name="tahun_akademik" class="form-control" placeholder="Tahun Akademik"
+                            maxlength="9" required>
+                        <small>Contoh : 2022/2023</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="hue-demo">Semester</label>
+                        <select name="semester" class="select2 form-select shadow-none"
+                            style="width: 100%; height:36px;" required>
+                            <option selected disabled value="">Choose...</option>
+                            <option value="Ganjil">Ganjil</option>
+                            <option value="Genap">Genap</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="hue-demo">Status</label>
+                        <select name="status" class="select2 form-select shadow-none" style="width: 100%; height:36px;" required>
+                            <option selected disabled value="">Choose...</option>
+                            <option value="1">Aktif</option>
+                            <option value="0">Tidak Aktif</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('.delete').click(function () {
+        var dataid = $(this).attr('data-id');
+        var nama = $(this).attr('data-nama');
+        swal({
+            title: "Apa kamu yakin ?"
+            , text: "Kamu akan hapus tahun akademik " + nama + " "
+            , icon: "warning"
+            , buttons: true
+            , dangerMode: true
+            ,
+        })
+            .then((willUpprove) => {
+                if (willUpprove) {
+                    window.location = "/hapus-akademik/" + dataid
+                    swal("Data berhasil dihapus", {
+                        icon: "success"
+                        ,
+                    });
+                } else {
+                    swal("Data batal dihapus");
+                }
+            });
+    });
+
+</script>
+{% endblock %}

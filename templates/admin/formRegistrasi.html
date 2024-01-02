@@ -1,0 +1,97 @@
+{% extends 'component/base.html' %}
+
+{% block content %}
+
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-12 d-flex no-block align-items-center">
+            <h4 class="page-title">Form Registrasi</h4>
+            <div class="ms-auto text-end">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Form Registrasi</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Library</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md">
+            <div class="card">
+                <form action="/insert-user" class="form-horizontal" method="POST">
+                    <div class="card-body">          
+                        <div class="form-group">
+                            <label for="hue-demo">Nama Lengkap</label>
+                            <input type="text" id="nama" name="nama" class="form-control demo" data-control="hue"
+                               placeholder="Nama Lengkap" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="hue-demo">Status</label>
+                            <select name="status" class="select2 form-select shadow-none" style="width: 100%; height:36px;" required>
+                                <option selected disabled value="">Choose...</option>
+                                <option value="Aktif" >Aktif</option>
+                                <option value="Tidak Aktif" >Tidak Aktif</option>                 
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="hue-demo">Level</label>
+                            <select name="level" id="level-select" class="select2 form-select shadow-none" style="width: 100%; height:36px;" required>
+                                <option selected disabled value="">Choose...</option>
+                                <option value="Admin" >Admin</option>
+                                <option value="Guru" >Guru</option>                 
+                            </select>
+                        </div>
+                        
+                        <div class="form-group" id="mata-pelajaran-form" style="display: none;">
+                            <label for="mata-pelajaran">Mata Pelajaran</label>
+                            <select id="mata-pelajaran" name="id_mapel" class="select2 form-select shadow-none" style="width: 100%; height:36px;"> 
+                                <option selected disabled value="">Choose...</option>
+                                {% for mapel in mapel %}
+                                <option value="{{mapel.id_mapel}}" >{{mapel.pelajaran}}</option> 
+                                {% endfor %}                      
+                            </select>
+                        </div>
+                                      
+                        <div class="form-group">
+                            <label for="hue-demo">Password</label>
+                            <input type="password"  name="password" class="form-control demo" data-control="hue"
+                               placeholder="Password" required>
+                        </div>
+                    </div>
+                  
+                    <div class="border-top">
+                        <div class="card-body">
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+<script>
+    const levelSelect = document.getElementById("level-select");
+    const mataPelajaranForm = document.getElementById("mata-pelajaran-form");
+    const kelasForm = document.getElementById("kelas-form");
+
+    levelSelect.addEventListener("change", function() {
+        if (levelSelect.value === "Guru") {
+            mataPelajaranForm.style.display = "block";
+            kelasForm.style.display = "none";
+        } else {
+            mataPelajaranForm.style.display = "none";
+            kelasForm.style.display = "none";
+        }
+    });
+</script>
+
+
+{% endblock %}

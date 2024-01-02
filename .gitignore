@@ -1,0 +1,10 @@
+__pycache__/
+Include/
+Lib/
+Scripts/
+etc/
+share/
+Record.ipynb/
+Training.ipynb/
+Untitled.ipynb/
+Untitled1.ipynb/

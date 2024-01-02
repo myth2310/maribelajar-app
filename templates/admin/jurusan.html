@@ -1,0 +1,134 @@
+{% extends 'component/base.html' %}
+
+{% block content %}
+
+{% include 'component/sweetalert.html'%}
+
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-12 d-flex no-block align-items-center">
+            <h4 class="page-title">Jurusan</h4>
+            <div class="ms-auto text-end">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Jurusan</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal"
+                data-bs-target="#JurusanModal">Tambah Jurusan</button>
+            <div class="table-responsive">
+                <table id="zero_config" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Jurusan</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for jurusan in jurusan %}
+                        <tr>
+                            <td>{{loop.index}}</td>
+                            <td>{{jurusan.jurusan}}</td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#EditJurusanModal{{jurusan.id_jurusan}}"><i
+                                        class="fa-solid fa-pen-to-square"></i></button>
+                                <button type="button" class="btn btn-danger btn-sm delete" data-id="{{jurusan.id_jurusan}}" data-nama="{{jurusan.jurusan}}"><i class="fa-solid fa-trash"
+                                        style="color: #f7f7f7;"></i></button>
+                            </td>
+                        </tr>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="EditJurusanModal{{jurusan.id_jurusan}}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Jurusan</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="/edit-jurusan/{{jurusan.id_jurusan}}" method="post">
+                                            <div class="form-group">
+                                                <label for="hue-demo">Nama Jurusan</label>
+                                                <input type="text" name="jurusan" class="form-control demo"
+                                                    value="{{jurusan.jurusan}}" required>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Edit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="JurusanModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Jurusan</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/insert-jurusan" method="post">
+                    <div class="form-group">
+                        <label for="hue-demo">Nama Jurusan</label>
+                        <input type="text" name="jurusan" class="form-control demo" placeholder="Nama Jurusan" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('.delete').click(function () {
+        var dataid = $(this).attr('data-id');
+        var nama = $(this).attr('data-nama');
+        swal({
+            title: "Apa kamu yakin ?"
+            , text: "Kamu akan hapus jurusan " + nama + " "
+            , icon: "warning"
+            , buttons: true
+            , dangerMode: true
+            ,
+        })
+            .then((willUpprove) => {
+                if (willUpprove) {
+                    window.location = "/hapus-jurusan/" + dataid
+                    swal("Data berhasil dihapus", {
+                        icon: "success"
+                        ,
+                    });
+                } else {
+                    swal("Data batal dihapus");
+                }
+            });
+    });
+
+</script>
+
+{% endblock %}

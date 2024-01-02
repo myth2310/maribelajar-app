@@ -1,0 +1,147 @@
+{% extends 'component/base1.html' %}
+
+{% block content %}
+
+<style>
+    @media (max-width: 768px) {
+        img {
+            max-height: 80px; 
+        }
+    }
+
+    @media (max-width: 767px) {
+        .profil-image {
+            display: none;
+        }
+    }
+    @media (max-width: 767px) {
+        .detail-profil {
+            padding: 0 5% 0;
+        }
+    }
+</style>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-3 profil-image">
+                        {% if user.image is none or user.image == 'NULL' %}
+                        <img src="https://th.bing.com/th/id/OIP.ZT-Tw8tYy38htqch69vsGQAAAA?pid=ImgDet&rs=1" alt="Profil"
+                        width="100%"
+                        style="border-radius: 50%; height: 110px; object-fit: cover;box-shadow: 0 0 10px rgba(248, 246, 246, 0.5);">
+                        {% else %}
+                        <img src="{{ url_for('static', filename='profil/' + user.image) }}" alt="Profil" width="100%"
+                            style="border-radius: 50%; height: 110px; object-fit: cover;box-shadow: 0 0 10px rgba(248, 246, 246, 0.5);">
+                        {% endif %}
+                    </div>
+                    <div class="col-md-9 detail-profil">
+                        <h1 style="font-weight: 700; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">{{ user.nama }}</h1>
+                        {% if user.level == 'Guru' %}
+                        <p style="font-weight: 600;">{{ user.pelajaran }}</p>
+                        {% else %}
+                        <p style="font-weight: 600;">{{ user.jurusan }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-footer">
+                {% if user.level == 'Guru' %}
+                <div class="row">
+                    <div class="col-xs-6">
+                        <i class="fa-solid fa-book"></i>&nbsp; Guru Pelajaran
+                    </div>
+                    <div class="col-xs-6 text-right">
+                        {{ user.pelajaran }}
+                    </div>
+                </div>
+                {% else %}
+                <div class="row">
+                    <div class="col-xs-6">
+                        <i class="fa-solid fa-school"></i>&nbsp; Jurusan
+                    </div>
+                    <div class="col-xs-6 text-right">
+                        {{ user.jurusan }}
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <i class="fa-solid fa-chalkboard"></i>&nbsp; Kelas
+                    </div>
+                    <div class="col-xs-6 text-right">
+                        {{ user.kelas }}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="panel panel-primary" style="border: none;">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs" style="padding-left: 4%;">
+                        <div class="huge">Tahun Akademik</div>
+                        <div>{{akademik.tahun_akademik}} {{akademik.semester}}</div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <a href="/panduan" class="btn btn-warning btn-lg btn-block pt-2" style="border-radius: 0;"><i
+                        class="fa-solid fa-book-bookmark"></i>&nbsp; Panduan Mari<span
+                        style="font-weight: bold;">Belajar</span></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="panel panel-default panel-primary">
+            <div class="panel-heading">
+                <i class="fa-solid fa-chalkboard-user"></i>&nbsp; Mata Pelajaran
+            </div>
+            <div class="panel-body">
+                <div class="panel-group" id="accordion">
+                    {% if user.level == 'Guru' %}
+
+                    <a href="/{{user.id_mapel}}/{{user.pelajaran_slug}}" class="list-material"
+                        style="text-decoration: none;">
+                        <div class="panel panel-default" style="margin-top: 2%;">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    {{user.pelajaran}}
+                                </h4>
+                            </div>
+                        </div>
+                    </a>
+                  
+                    {% else %}
+                    {% if jadwal %}
+                    {% for subject in jadwal %}
+                    <a href="/{{subject.id_mapel}}/{{subject.pelajaran_slug}}" class="list-material"
+                        style="text-decoration: none;">
+                        <div class="panel panel-default" style="margin-top: 2%;">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    {{ subject.pelajaran }}
+                                </h4>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                    {% else %}
+                    <p>Tidak ada pelajaran hari ini</p>
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

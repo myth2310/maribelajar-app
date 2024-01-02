@@ -1,0 +1,254 @@
+{% extends 'component/base1.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-green">
+                <div class="panel-heading">
+                    Tambah Materi
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Mata Pelajaran</label>
+                                <input name="materi" class="form-control" value="{{user.pelajaran}}"
+                                    placeholder="Materi" readonly>
+                            </div>
+                            <form action="/insert-materi" method="post" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label>Nama Materi</label>
+                                    <input name="materi" class="form-control" placeholder="Materi" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tanggal</label>
+                                    <input type="date" name="date" class="form-control" placeholder="Tanggal" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="id_mapel" class="form-control" value="{{user.id_mapel}}"
+                                        placeholder="Materi" style="display: none;">
+                                </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="Select">Kelas</label>
+                                <select name="id_kelas" id="Select" class="form-control" required>
+                                    <option selected disabled value="">Choose...</option>
+                                    {% for kelas in kelas %}
+                                    <option value="{{kelas.id_kelas}}">{{kelas.kelas}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Upload Materi</label>
+                                <ul class="nav nav-pills">
+                                    <li class="active"><a href="#home-pills" data-toggle="tab">Upload File Materi</a>
+                                    </li>
+                                    <li><a href="#profile-pills" data-toggle="tab">Link Materi</a>
+                                    </li>
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div class="tab-pane fade in active" id="home-pills">
+                                        <div class="file-materi" style="margin-top: 2%;">
+                                            <input name="file" type="file" class="form-control" accept=".pdf, .docx">
+                                            <p>File foto harus pdf / word, dan ukuran file harus di bawah 2MB</p>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="profile-pills">
+                                        <div class="form-group" style="margin-top: 2%;">
+                                            <input type="text" name="link" class="form-control"
+                                                placeholder="Link Materi">
+                                            <p>Masukan Link Matri : Google Drive atau yang lainya</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success">Tambah</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Materi</th>
+                                    <th>Tanggal</th>
+                                    <th>Pelajaran</th>
+                                    <th>Kelas</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for aktifitas in aktifitas %}
+                                <tr class="odd gradeX">
+                                    <td>{{loop.index}}</td>
+                                    <td>{{aktifitas.materi}}</td>
+                                    <td>{{aktifitas.date}}</td>
+                                    <td>{{aktifitas.pelajaran}}</td>
+                                    <td class="center">{{aktifitas.kelas}}</td>
+                                    <td class="center">
+                                        <!-- <button type="button" class="btn btn-warning" data-toggle="modal"
+                                            data-target="#myModal{{aktifitas.id_aktifitas}}">
+                                            <i class="fa-regular fa-pen-to-square"></i>
+                                        </button> -->
+                                        <!-- Modal -->
+                                        <button class="btn btn-danger delete" data-id="{{aktifitas.id_aktifitas}}" data-nama="{{aktifitas.materi}}"><i class="fa-solid fa-trash"></i></button>
+                                    </td>
+                                </tr>
+
+                                <div class="modal fade" id="myModal{{aktifitas.id_aktifitas}}" tabindex="-1" role="dialog"
+                                    aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title" id="myModalLabel">Edit Materi</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label>Mata Pelajaran</label>
+                                                            <input name="materi" class="form-control"
+                                                                value="{{user.pelajaran}}" placeholder="Materi"
+                                                                readonly>
+                                                        </div>
+                                                        <form action="/insert-materi" method="post"
+                                                            enctype="multipart/form-data">
+                                                            <div class="form-group">
+                                                                <label>Nama Materi</label>
+                                                                <input name="materi" class="form-control"
+                                                                    placeholder="Materi" value="{{aktifitas.materi}}" required>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Tanggal</label>
+                                                                <input type="date" name="date" class="form-control"
+                                                                    placeholder="Tanggal" value="{{aktifitas.date}}" required>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="text" name="id_mapel" class="form-control"
+                                                                    value="{{user.id_mapel}}" placeholder="Materi"
+                                                                    style="display: none;">
+                                                            </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="Select">Kelas</label>
+                                                            <select name="id_kelas" id="Select" class="form-control"
+                                                                required>
+                                                                <option value="">{{aktifitas.kelas}}</option>
+                                                                {% for kelas in kelas %}
+                                                                <option value="{{kelas.id_kelas}}">{{kelas.kelas}} </option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Upload Materi</label>
+                                                            <ul class="nav nav-pills">
+                                                                <li class="active"><a href="#home-pills"
+                                                                        data-toggle="tab">Upload File Materi</a>
+                                                                </li>
+                                                                <li><a href="#profile-pills" data-toggle="tab">Link
+                                                                        Materi</a>
+                                                                </li>
+                                                            </ul>
+
+                                                            <!-- Tab panes -->
+                                                            <div class="tab-content">
+                                                                <div class="tab-pane fade in active" id="home-pills">
+                                                                    <div class="file-materi" style="margin-top: 2%;">
+                                                                        <input name="file" type="file"
+                                                                            class="form-control" accept=".pdf, .docx">
+                                                                        <p>File foto harus pdf / word, dan ukuran file
+                                                                            harus di bawah 2MB</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="tab-pane fade" id="profile-pills">
+                                                                    <div class="form-group" style="margin-top: 2%;">
+                                                                        <input type="text" name="link"
+                                                                            class="form-control"
+                                                                            placeholder="Link Materi">
+                                                                        <p>Masukan Link Matri : Google Drive atau yang
+                                                                            lainya</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default"
+                                                        data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary">Edit</button>
+                                                </div>
+                                                </form>
+                                            </div>                
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#dataTables-example').DataTable({
+            responsive: true
+        });
+    });
+</script>
+
+<script>
+    $('.delete').click(function () {
+        var dataid = $(this).attr('data-id');
+        var nama = $(this).attr('data-nama');
+        swal({
+            title: "Apa kamu yakin ?"
+            , text: "Kamu akan hapus materi " + nama + " "
+            , icon: "warning"
+            , buttons: true
+            , dangerMode: true
+            ,
+        })
+            .then((willUpprove) => {
+                if (willUpprove) {
+                    window.location = "/delete-materi/" + dataid + ""
+                    swal("Data berhasil dihapus", {
+                        icon: "success"
+                        ,
+                    });
+                } else {
+                    swal("Data batal dihapus");
+                }
+            });
+    });
+
+</script>
+
+{% endblock %}
